@@ -3,7 +3,7 @@ import Foundation
 class TimerFormatter: Formatter {
   let componentFormatter: DateComponentsFormatter = {
     let formatter = DateComponentsFormatter()
-    formatter.allowedUnits = [.hour, .minute, .second]
+    formatter.allowedUnits = [.minute, .second]
     formatter.zeroFormattingBehavior = .pad
     return formatter
   }()
