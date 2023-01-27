@@ -1,6 +1,15 @@
 import SwiftUI
 
 struct ContentView: View {
+  // boolean
+  @State var isCount = false
+
+  // 開始/停止ボタン関連
+  @State var btnText = "開始"
+  @State var btnColor = "startTextColor"
+  @State var btnBgColor = "startBtnColor"
+  
+  
   var body: some View {
     ZStack {
       Color("bgColor")
@@ -28,11 +37,22 @@ struct ContentView: View {
           Spacer()
           Button(action: {
             // 開始/停止ボタン
+            if isCount {
+              isCount = false
+              btnText = "開始"
+              btnColor = "startTextColor"
+              btnBgColor = "startBtnColor"
+            } else {
+              isCount = true
+              btnText = "停止"
+              btnColor = "stopTextColor"
+              btnBgColor = "stopBtnColor"
+            }
           }) {
-            Text("開始")
+            Text(btnText)
               .frame(width: 88, height: 88)
-              .foregroundColor(Color("startTextColor"))
-              .background(Color("startBtnColor"))
+              .foregroundColor(Color(btnColor))
+              .background(Color(btnBgColor))
               .clipShape(Circle())
           }
         }
