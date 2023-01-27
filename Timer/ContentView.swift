@@ -11,9 +11,10 @@ struct ContentView: View {
   @State var count = 0.0
   
   // 開始/停止ボタン関連
-  @State var btnText = "開始"
-  @State var btnColor = "startTextColor"
-  @State var btnBgColor = "startBtnColor"
+  @State var btnStatus = 0 // 0: initial 1: active
+  @State var rightBtnText = ["開始", "停止"]
+  @State var rightBtnColor = ["startTextColor", "stopTextColor"]
+  @State var rightBtnBgColor = ["startBtnColor", "stopBtnColor"]
   
   // --- 関数部分 ---
   func countUpTimer() {
@@ -25,9 +26,7 @@ struct ContentView: View {
  
   func onStart() {
     isCount = true
-    btnText = "停止"
-    btnColor = "stopTextColor"
-    btnBgColor = "stopBtnColor"
+    btnStatus = 1
     
     timerHandler = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) {
       _ in countUpTimer()
@@ -36,9 +35,7 @@ struct ContentView: View {
   
   func onStop() {
     isCount = false
-    btnText = "開始"
-    btnColor = "startTextColor"
-    btnBgColor = "startBtnColor"
+    btnStatus = 0
   }
   
   var body: some View {
@@ -74,10 +71,10 @@ struct ContentView: View {
               onStart()
             }
           }) {
-            Text(btnText)
+            Text(rightBtnText[btnStatus])
               .frame(width: 88, height: 88)
-              .foregroundColor(Color(btnColor))
-              .background(Color(btnBgColor))
+              .foregroundColor(Color(rightBtnColor[btnStatus]))
+              .background(Color(rightBtnBgColor[btnStatus]))
               .clipShape(Circle())
           }
         }
