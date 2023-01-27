@@ -10,11 +10,14 @@ struct ContentView: View {
   // 経過時間のカウント
   @State var count = 0.0
   
-  // 開始/停止ボタン関連
-  @State var btnStatus = 0 // 0: initial 1: active
-  @State var rightBtnText = ["開始", "停止"]
-  @State var rightBtnColor = ["startTextColor", "stopTextColor"]
-  @State var rightBtnBgColor = ["startBtnColor", "stopBtnColor"]
+  // ボタン関連
+  @State var btnStatus = 0 // 0: initial 1: active 2: stop
+  @State var rightBtnText = ["開始", "停止", "開始"]
+  @State var rightBtnColor = ["startTextColor", "stopTextColor", "startTextColor"]
+  @State var rightBtnBgColor = ["startBtnColor", "stopBtnColor", "startBtnColor"]
+  @State var leftBtnText = ["ラップ", "ラップ", "リセット"]
+  @State var leftBtnColor = ["inactiveRapTextColor", "rapTextColor", "rapTextColor"]
+  @State var leftBtnBgColor = ["inactiveRapBtnColor", "rapBtnColor", "rapBtnColor"]
   
   // --- 関数部分 ---
   func countUpTimer() {
@@ -35,7 +38,7 @@ struct ContentView: View {
   
   func onStop() {
     isCount = false
-    btnStatus = 0
+    btnStatus = 2
   }
   
   var body: some View {
@@ -56,10 +59,10 @@ struct ContentView: View {
           Button(action: {
             // ラップボタン
           }) {
-            Text("ラップ")
+            Text(leftBtnText[btnStatus])
               .frame(width: 88, height: 88)
-              .foregroundColor(Color("rapTextColor"))
-              .background(Color("rapBtnColor"))
+              .foregroundColor(Color(leftBtnColor[btnStatus]))
+              .background(Color(leftBtnBgColor[btnStatus]))
               .clipShape(Circle())
           }
           Spacer()
