@@ -9,6 +9,10 @@ struct ContentView: View {
   @State var timerHandler : Timer?
   // 経過時間のカウント
   @State var count = 0.0
+  // ラップカウント用
+  @State var lapCount = 0.0
+  // ラップ時間の配列
+  @State var lapArray = []
   
   // ボタン関連
   @State var btnStatus = 0 // 0: initial 1: active 2: stop
@@ -22,6 +26,7 @@ struct ContentView: View {
   // --- 関数部分 ---
   func countUpTimer() {
     count += 0.01
+    lapCount += 0.01
     if isCount == false {
       timerHandler?.invalidate()
     }
@@ -36,6 +41,11 @@ struct ContentView: View {
     }
   }
   
+  func onLap(_ lapTime: Double) {
+    lapArray.append(lapTime)
+    lapCount = 0.0
+  }
+  
   func onStop() {
     isCount = false
     btnStatus = 2
@@ -43,6 +53,7 @@ struct ContentView: View {
   
   func onReset() {
     count = 0.0
+    lapCount = 0.0
   }
   
   var body: some View {
@@ -63,7 +74,7 @@ struct ContentView: View {
           Button(action: {
             // ラップ/リセットボタン
             if isCount {
-              // ラップ処理
+              onLap(lapCount)
             } else {
               onReset()
             }
