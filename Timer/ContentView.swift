@@ -145,7 +145,7 @@ struct ContentView: View {
             ForEach((0 ..< lapArray.count).reversed(), id: \.self) { index in
               HStack {
                 Text("ラップ\(index + 1)")
-                  .foregroundColor(Color("fontColor"))
+                  .modifier(lapLabelColor(lapStatus: lapCheker(lap: lapArray[index])))
                 Spacer()
                 Text(NSNumber(value: lapArray[index]),  formatter: formatter)
                   .font(Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
