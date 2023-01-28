@@ -54,6 +54,20 @@ struct ContentView: View {
     status = 0
   }
   
+  func lapCheker(lap: Double) -> Int  {
+    if lapArray.count < 3 {
+      return 0
+    } else {
+      if (lapArray.min() == lap) {
+        return 1
+      } else if (lapArray.max() == lap) {
+        return 2
+      } else {
+        return 0
+      }
+    }
+  }
+  
   var body: some View {
     ZStack {
       Color("bgColor")
@@ -135,7 +149,7 @@ struct ContentView: View {
                 Spacer()
                 Text(NSNumber(value: lapArray[index]),  formatter: formatter)
                   .font(Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
-                  .foregroundColor(Color("fontColor"))
+                  .modifier(lapLabelColor(lapStatus: lapCheker(lap: lapArray[index])))
               }
               .padding(.horizontal)
               .padding(.top, 3.0)
@@ -161,4 +175,21 @@ struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
     ContentView()
   }
+}
+
+struct lapLabelColor: ViewModifier {
+    var lapStatus: Int
+
+    func body(content: Content) -> some View {
+        if lapStatus == 0 {
+            content
+            .foregroundColor(Color("fontColor"))
+        } else if lapStatus == 1 {
+            content
+            .foregroundColor(Color("startTextColor"))
+        } else if lapStatus == 2 {
+          content
+          .foregroundColor(Color("stopTextColor"))
+      }
+    }
 }
