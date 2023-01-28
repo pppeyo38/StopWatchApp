@@ -3,8 +3,8 @@ import SwiftUI
 struct ContentView: View {
   private let formatter = TimerFormatter()
   
-  // boolean
-  @State var isCount = false
+  // ステータス（初期状態、カウント中、停止中）
+  @State var status = 0 // 0: initial 1: active 2: stop
   // タイマーの変数
   @State var timerHandler : Timer?
   // 経過時間のカウント
@@ -15,7 +15,6 @@ struct ContentView: View {
   @State var lapArray: [Double] = []
   
   // ボタン関連
-  @State var btnStatus = 0 // 0: initial 1: active 2: stop
   @State var rightBtnText = ["開始", "停止", "開始"]
   @State var rightBtnColor = ["startTextColor", "stopTextColor", "startTextColor"]
   @State var rightBtnBgColor = ["startBtnColor", "stopBtnColor", "startBtnColor"]
@@ -27,15 +26,13 @@ struct ContentView: View {
   func countUpTimer() {
     count += 0.01
     lapCount += 0.01
-    if isCount == false {
+    if status == 2 {
       timerHandler?.invalidate()
     }
   }
  
   func onStart() {
-    isCount = true
-    btnStatus = 1
-    
+    status = 1
     timerHandler = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) {
       _ in countUpTimer()
     }
@@ -47,15 +44,14 @@ struct ContentView: View {
   }
   
   func onStop() {
-    isCount = false
-    btnStatus = 2
+    status = 2
   }
   
   func onReset() {
     count = 0.0
     lapCount = 0.0
     lapArray = []
-    btnStatus = 0
+    status = 0
   }
   
   var body: some View {
@@ -75,32 +71,32 @@ struct ContentView: View {
         HStack {
           Button(action: {
             // ラップ/リセットボタン
-            if isCount {
+            if status == 1 {
               onLap(lapTime: lapCount)
               lapCount = 0.0
-            } else {
+            } else if status == 2 {
               onReset()
             }
           }) {
-            Text(leftBtnText[btnStatus])
+            Text(leftBtnText[status])
               .frame(width: 88, height: 88)
-              .foregroundColor(Color(leftBtnColor[btnStatus]))
-              .background(Color(leftBtnBgColor[btnStatus]))
+              .foregroundColor(Color(leftBtnColor[status]))
+              .background(Color(leftBtnBgColor[status]))
               .clipShape(Circle())
           }
           Spacer()
           Button(action: {
             // 開始/停止ボタン
-            if isCount {
+            if status == 1 {
               onStop()
             } else {
               onStart()
             }
           }) {
-            Text(rightBtnText[btnStatus])
+            Text(rightBtnText[status])
               .frame(width: 88, height: 88)
-              .foregroundColor(Color(rightBtnColor[btnStatus]))
-              .background(Color(rightBtnBgColor[btnStatus]))
+              .foregroundColor(Color(rightBtnColor[status]))
+              .background(Color(rightBtnBgColor[status]))
               .clipShape(Circle())
           }
         }
@@ -113,7 +109,7 @@ struct ContentView: View {
         .padding([.top, .leading, .trailing])
         
         VStack {
-          if btnStatus != 0 {
+          if status != 0 {
             HStack {
               Text("ラップ\(lapArray.count + 1)")
                 .foregroundColor(Color("fontColor"))
