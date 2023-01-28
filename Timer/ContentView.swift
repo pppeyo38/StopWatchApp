@@ -12,7 +12,7 @@ struct ContentView: View {
   // ラップカウント用
   @State var lapCount = 0.0
   // ラップ時間の配列
-  @State var lapArray = []
+  @State var lapArray: [Double] = []
   
   // ボタン関連
   @State var btnStatus = 0 // 0: initial 1: active 2: stop
@@ -41,7 +41,7 @@ struct ContentView: View {
     }
   }
   
-  func onLap(_ lapTime: Double) {
+  func onLap(lapTime: Double) {
     lapArray.append(lapTime)
     lapCount = 0.0
   }
@@ -54,6 +54,8 @@ struct ContentView: View {
   func onReset() {
     count = 0.0
     lapCount = 0.0
+    lapArray = []
+    btnStatus = 0
   }
   
   var body: some View {
@@ -74,7 +76,8 @@ struct ContentView: View {
           Button(action: {
             // ラップ/リセットボタン
             if isCount {
-              onLap(lapCount)
+              onLap(lapTime: lapCount)
+              lapCount = 0.0
             } else {
               onReset()
             }
@@ -108,6 +111,32 @@ struct ContentView: View {
             .background(Color("strokeColor"))
         }
         .padding([.top, .leading, .trailing])
+        
+        VStack {
+          if btnStatus != 0 {
+            HStack {
+              Text("ラップ\(lapArray.count + 1)")
+                .foregroundColor(Color("fontColor"))
+              Spacer()
+              Text(NSNumber(value: lapCount),  formatter: formatter)
+                .font(Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
+                .foregroundColor(Color("fontColor"))
+            }
+            .padding(.horizontal)
+          }
+          ForEach((0 ..< lapArray.count).reversed(), id: \.self) { index in
+            HStack {
+              Text("ラップ\(index + 1)")
+                .foregroundColor(Color("fontColor"))
+              Spacer()
+              Text(NSNumber(value: lapArray[index]),  formatter: formatter)
+                .font(Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
+                .foregroundColor(Color("fontColor"))
+            }
+            .padding(.horizontal)
+          }
+        }
+        
         Spacer()
         
       }
