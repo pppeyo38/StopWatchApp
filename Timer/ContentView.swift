@@ -108,42 +108,44 @@ struct ContentView: View {
         }
         .padding([.top, .leading, .trailing])
         
-        VStack {
-          if status != 0 {
-            HStack {
-              Text("ラップ\(lapArray.count + 1)")
-                .foregroundColor(Color("fontColor"))
-              Spacer()
-              Text(NSNumber(value: lapCount),  formatter: formatter)
-                .font(Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
-                .foregroundColor(Color("fontColor"))
+        ScrollView {
+          VStack {
+            if status != 0 {
+              HStack {
+                Text("ラップ\(lapArray.count + 1)")
+                  .foregroundColor(Color("fontColor"))
+                Spacer()
+                Text(NSNumber(value: lapCount),  formatter: formatter)
+                  .font(Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
+                  .foregroundColor(Color("fontColor"))
+              }
+              .padding(.horizontal)
+              .padding(.top, 3.0)
+              VStack {
+                Divider()
+                  .frame(height: 1.0)
+                  .background(Color("strokeColor"))
+              }
+              .padding(.horizontal)
             }
-            .padding(.horizontal)
-            .padding(.top, 3.0)
-            VStack {
-              Divider()
-                .frame(height: 1.0)
-                .background(Color("strokeColor"))
+            ForEach((0 ..< lapArray.count).reversed(), id: \.self) { index in
+              HStack {
+                Text("ラップ\(index + 1)")
+                  .foregroundColor(Color("fontColor"))
+                Spacer()
+                Text(NSNumber(value: lapArray[index]),  formatter: formatter)
+                  .font(Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
+                  .foregroundColor(Color("fontColor"))
+              }
+              .padding(.horizontal)
+              .padding(.top, 3.0)
+              VStack {
+                Divider()
+                  .frame(height: 1.0)
+                  .background(Color("strokeColor"))
+              }
+              .padding(.horizontal)
             }
-            .padding(.horizontal)
-          }
-          ForEach((0 ..< lapArray.count).reversed(), id: \.self) { index in
-            HStack {
-              Text("ラップ\(index + 1)")
-                .foregroundColor(Color("fontColor"))
-              Spacer()
-              Text(NSNumber(value: lapArray[index]),  formatter: formatter)
-                .font(Font(UIFont.monospacedDigitSystemFont(ofSize: 20, weight: .light)))
-                .foregroundColor(Color("fontColor"))
-            }
-            .padding(.horizontal)
-            .padding(.top, 3.0)
-            VStack {
-              Divider()
-                .frame(height: 1.0)
-                .background(Color("strokeColor"))
-            }
-            .padding(.horizontal)
           }
         }
         
