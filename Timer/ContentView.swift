@@ -41,6 +41,10 @@ struct ContentView: View {
     btnStatus = 2
   }
   
+  func onReset() {
+    count = 0.0
+  }
+  
   var body: some View {
     ZStack {
       Color("bgColor")
@@ -57,7 +61,12 @@ struct ContentView: View {
   
         HStack {
           Button(action: {
-            // ラップボタン
+            // ラップ/リセットボタン
+            if isCount {
+              // ラップ処理
+            } else {
+              onReset()
+            }
           }) {
             Text(leftBtnText[btnStatus])
               .frame(width: 88, height: 88)
